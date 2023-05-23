@@ -128,14 +128,7 @@ The [PyO3 user guide > cross-compilation](https://pyo3.rs/main/building_and_dist
 - We need the `generate-import-lib` feature from PyO3 (Windows support).
 - We want the `abi3` feature (support for multiple `Python` versions with specific interpreters)
 
-We'll offload the build to Github by using `workflows`.
-
-```shell
-mkdir -p .github/workflows
-
-cd rust-python-lib
-maturin generate-ci github > ../.github/workflows/CI.yml
-```
+_Work in progres_
 
 
 #### Investigating supporting additional `Python` versions.
