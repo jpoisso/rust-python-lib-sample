@@ -1,0 +1,14 @@
+[package]
+name = "rust-python-lib"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "rust_python_lib"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+pyo3 = { version = "0.18.3", features = ["extension-module"] }
+
+[build-dependencies]
+maturin = "1.0.0"
