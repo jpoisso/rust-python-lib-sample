@@ -7,6 +7,7 @@ fn rust_python_lib(_: Python, m: &PyModule) -> PyResult<()> {
     Ok(())
 }
 
+#[cfg(Py_3_9)]
 #[pyfunction]
 fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
     Ok((a + b).to_string())

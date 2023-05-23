@@ -8,7 +8,7 @@ This project serves as an example of a library written in `Rust` that can be pac
 - [x] Generate a `Python` wheel from the `Rust` library.
 - [x] Install and use the library within a `Python` project.
 - [ ] Investigate cross-compilation (Windows and Linux support).
-- [ ] Investigate supporting multiple `Python` versions.
+- [X] Investigate supporting multiple `Python` versions.
 - [ ] Measure overhead costs and compare with `Python-native` solutions.
 
 ## Overview
@@ -117,3 +117,36 @@ print(rust_python_lib.sum_as_string(10, 20))
 ```
 
 Both should produce `30`, which is the sum of both numbers computed within our `Rust` library and returned to the `Python` context.
+
+
+### Additional Documentation
+
+#### Investigating supporting additional `Python` versions.
+
+The [PyO3 user guide](https://pyo3.rs/main/building_and_distribution/multiple_python_versions) has a section dedicated to this.
+
+- Update the [Cargo.toml](rust-python-lib/Cargo.toml) file: 
+
+```toml
+[build-dependencies]
+pyo3-build-config = { git = "https://github.com/pyo3/pyo3", features = ["resolve-config"] }
+```
+- Add a [Build.rs]() file:
+
+```rust
+fn main() {
+    pyo3_build_config::use_pyo3_cfgs();
+}
+```
+
+- Use the `#[cfg]` flags to define `Python` version hints.
+
+We'll modify our [lib.rs](rust-python-lib/src/lib.rs) to only support `Python` 3.9 and upwards.
+
+```rust
+#[cfg(Py_3_9)]
+#[pyfunction]
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
+}
+```
