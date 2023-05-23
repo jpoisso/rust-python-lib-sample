@@ -45,7 +45,7 @@ name = "rust_python_lib"
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-pyo3 = { version = "0.18.3", features = ["extension-module"] }
+pyo3 = { version = "0.18.3", features = ["extension-module", "abi3", "abi3-py39", "generate-import-lib"] }
 
 [build-dependencies]
 maturin = "1.0.0"
@@ -99,7 +99,7 @@ The resulting wheel can be found in [rust-python-lib/target/wheels/](rust-python
 
 The name of the wheel will vary depending on your `Operating System` and `Python` version.
 ```shell
-pip install target/wheels/rust_python_lib-0.1.0-cp310-none-win_amd64.whl
+pip install target/wheels/rust_python_lib-0.1.0-cp39-abi3-win_amd64.whl
 ```
 
 #### Using the package
@@ -121,9 +121,26 @@ Both should produce `30`, which is the sum of both numbers computed within our `
 
 ### Additional Documentation
 
+#### Investigating supporting cross-compilation (Windows and Linux support).
+
+The [PyO3 user guide > cross-compilation](https://pyo3.rs/main/building_and_distribution#cross-compiling) has a section dedicated to this.
+
+- We need the `generate-import-lib` feature from PyO3 (Windows support).
+- We want the `abi3` feature (support for multiple `Python` versions with specific interpreters)
+
+We'll offload the build to Github by using `workflows`.
+
+```shell
+mkdir -p .github/workflows
+
+cd rust-python-lib
+maturin generate-ci github > ../.github/workflows/CI.yml
+```
+
+
 #### Investigating supporting additional `Python` versions.
 
-The [PyO3 user guide](https://pyo3.rs/main/building_and_distribution/multiple_python_versions) has a section dedicated to this.
+The [PyO3 user guide > multiple_python_versions](https://pyo3.rs/main/building_and_distribution/multiple_python_versions) has a section dedicated to this.
 
 - Update the [Cargo.toml](rust-python-lib/Cargo.toml) file: 
 
